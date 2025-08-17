@@ -1,6 +1,9 @@
 package com.healthinsurancemanagementsystem.CeyMedInsurance.controller;
 
+import com.healthinsurancemanagementsystem.CeyMedInsurance.dto.ClaimRequest;
 import com.healthinsurancemanagementsystem.CeyMedInsurance.model.Claim;
+import com.healthinsurancemanagementsystem.CeyMedInsurance.model.ClaimDoc;
+import com.healthinsurancemanagementsystem.CeyMedInsurance.model.ClaimStatusHistory;
 import com.healthinsurancemanagementsystem.CeyMedInsurance.service.ClaimService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,10 +19,10 @@ public class ClaimController {
         this.claimService = claimService;
     }
 
-    // Submit new claim
+    // Submit new claim using DTO
     @PostMapping
-    public Claim submitClaim(@RequestBody Claim claim) {
-        return claimService.submitClaim(claim);
+    public Claim submitClaim(@RequestBody ClaimRequest request) {
+        return claimService.submitClaim(request);
     }
 
     // Get all claims
@@ -51,5 +54,23 @@ public class ClaimController {
     public String deleteClaim(@PathVariable Long id) {
         claimService.deleteClaim(id);
         return "Claim with ID " + id + " deleted successfully.";
+    }
+
+    // Add document
+    @PostMapping("/{id}/documents")
+    public ClaimDoc addDocument(@PathVariable Long id, @RequestBody ClaimDoc doc) {
+        return claimService.addDocument(id, doc);
+    }
+
+    // Get claim documents
+    @GetMapping("/{id}/documents")
+    public List<ClaimDoc> getDocuments(@PathVariable Long id) {
+        return claimService.getDocuments(id);
+    }
+
+    // Get claim status history
+    @GetMapping("/{id}/history")
+    public List<ClaimStatusHistory> getHistory(@PathVariable Long id) {
+        return claimService.getHistory(id);
     }
 }
