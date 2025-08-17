@@ -20,5 +20,45 @@ public class ClaimStatusHistory {
     @Column(columnDefinition = "TEXT")
     private String notes;
 
-    // Getters and Setters
+    // ----------- Getters & Setters -----------
+
+    public Long getHistoryId() {
+        return historyId;
+    }
+
+    public void setHistoryId(Long historyId) {
+        this.historyId = historyId;
+    }
+
+    public Claim getClaim() {
+        return claim;
+    }
+
+    public void setClaim(Claim claim) {
+        this.claim = claim;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getChangedAt() {
+        return changedAt;
+    }
+
+    public void setChangedAt(LocalDateTime changedAt) {
+        this.changedAt = changedAt;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 }
