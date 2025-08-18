@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/claims")
@@ -45,8 +46,8 @@ public class ClaimController {
 
     // Update claim status
     @PatchMapping("/{id}/status")
-    public Claim updateClaimStatus(@PathVariable Long id, @RequestParam String status) {
-        return claimService.updateClaimStatus(id, status);
+    public Claim updateClaimStatus(@PathVariable Long id, @RequestBody Map<String, String> payload) {
+        return claimService.updateClaimStatus(id, payload.get("status"));
     }
 
     // Delete claim

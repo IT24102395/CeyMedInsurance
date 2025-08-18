@@ -73,17 +73,21 @@ public class ClaimService {
 
     // Update claim status + log in history
     public Claim updateClaimStatus(Long id, String status) {
+        // Fetch claim or throw 404-style error
         Claim claim = claimRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Claim not found"));
-        claim.setStatus(status);
 
+        // Update status
+        claim.setStatus(status);
         Claim updated = claimRepository.save(claim);
 
-        ClaimStatusHistory history = new ClaimStatusHistory();
-        history.setClaim(updated);
-        history.setStatus(status);
-        history.setNotes("Status updated to " + status);
-        history.setChangedAt(LocalDateTime.now());
+        // Create history entry using constructor
+        ClaimStatusHistory history = new ClaimStatusHistory(
+                updated,
+                status,
+                "Status updated to " + status
+        );
+
         claimStatusHistoryRepository.save(history);
 
         return updated;

@@ -6,19 +6,36 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "claim_status_history")
 public class ClaimStatusHistory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long historyId;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "claim_id", nullable = false)
     private Claim claim;
 
+    @Column(nullable = false)
     private String status;
-    private LocalDateTime changedAt = LocalDateTime.now();
+
+    @Column(nullable = false)
+    private LocalDateTime changedAt;
 
     @Column(columnDefinition = "TEXT")
     private String notes;
+
+    // ----------- Constructors -----------
+
+    public ClaimStatusHistory() {
+        // Default constructor
+    }
+
+    public ClaimStatusHistory(Claim claim, String status, String notes) {
+        this.claim = claim;
+        this.status = status;
+        this.notes = notes;
+        this.changedAt = LocalDateTime.now();
+    }
 
     // ----------- Getters & Setters -----------
 
