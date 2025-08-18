@@ -17,6 +17,8 @@ public class ClaimService {
     private final UserRepository userRepository;
     private final PolicyRepository policyRepository;
 
+    private static final List<String> VALID_STATUSES = List.of("Pending", "Approved", "Rejected");
+
     public ClaimService(ClaimRepository claimRepository,
                         ClaimDocRepository claimDocRepository,
                         ClaimStatusHistoryRepository claimStatusHistoryRepository,
@@ -73,15 +75,20 @@ public class ClaimService {
 
     // Update claim status + log in history
     public Claim updateClaimStatus(Long id, String status) {
-        // Fetch claim or throw 404-style error
+        if (status == null || status.trim().isEmpty()) {
+            throw new IllegalArgumentException("Status must not be empty");
+        }
+
+        if (!VALID_STATUSES.contains(status)) {
+            throw new IllegalArgumentException("Invalid status: " + status);
+        }
+
         Claim claim = claimRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Claim not found"));
 
-        // Update status
         claim.setStatus(status);
         Claim updated = claimRepository.save(claim);
 
-        // Create history entry using constructor
         ClaimStatusHistory history = new ClaimStatusHistory(
                 updated,
                 status,
